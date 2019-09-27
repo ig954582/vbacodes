@@ -1,0 +1,83 @@
+Sub GenerateCodeforJqueryList()
+    
+     linkcol = 1
+    
+    getpath = InputBox("Enter Path :")
+    If Len(getpath) = 0 Then
+            End
+    End If
+    
+      TXT_FL = getpath & "\htmlcode.TXT"
+    Dim fs As Object
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    Dim htmlcode As Variant
+    Set htmlcode = fs.CreateTextFile(TXT_FL, True)
+    rno = InputBox("enter start row (where header starts", , 1)
+    
+        col = 1
+        RowString = "<thead><tr>"
+        Do While True
+            If Cells(rno, col) = 0 Then
+                    Exit Do
+            End If
+            
+            If col = 6 Then
+                 Ln = "<th width='1%'><div id='hfontL'>" & Cells(rno, col) & "</div></th>"
+            Else
+                Ln = "<th width='1%'><div id='hfont'>" & Cells(rno, col) & "</div></th>"
+            End If
+            RowString = RowString & Ln
+            col = col + 1
+        Loop
+        no_cols = col - 1
+        If linkcol > 0 Then
+         RowString = RowString & "<th width='5%'><div id='hfont'> PDF File</div></th>"
+         RowString = RowString & "</Tr></thead>"
+        End If
+        htmlcode.WriteLine (RowString)
+        htmlcode.WriteLine "==================================="
+     
+       rno = rno + 1
+    Do While True
+        If Cells(rno, 1) = 0 Then
+            Exit Do
+        End If
+        col = 1
+        RowString = "<tr>"
+        For i = 1 To no_cols
+          
+            
+                    dval = Cells(rno, i)
+             
+            
+                If i = 6 Then
+                     RowString = RowString & "<td class='fontL'>" & dval & "</td>"
+                Else
+                    RowString = RowString & "<td class='font'>" & dval & "</td>"
+                End If
+         
+        Next i
+        If linkcol > 0 Then
+           
+                
+                lnkFile = Cells(rno, 11)
+                hreflnk = "<td 'class='font'><a href='" & lnkFile & "' target='_BLANK'><img src='IMAGES/ICON_PDF.GIF' alt='pdf' title='Open Pdf File' height='19' width='23' border='0' /></a></td>"
+        
+        End If
+        RowString = RowString & hreflnk
+        RowString = RowString & "</Tr>"
+        htmlcode.WriteLine (RowString)
+        rno = rno + 1
+    Loop
+   ' Range("A1").Hyperlinks(1).Address
+    'htmlcode.WriteLine (RowString)
+    htmlcode.Close
+    Set fs = Nothing
+    
+    
+    MsgBox "Done"
+    
+            
+  
+    
+End Sub

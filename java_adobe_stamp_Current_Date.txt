@@ -1,0 +1,12 @@
+/* Put script title here */
+var cMyText =  "Replaced:"+util.printd("dd-mmm-yyyy", new Date());
+this.addWatermarkFromText(
+	{
+	cText: cMyText,
+	nFontSize:11,
+	nHorizAlign:app.constants.align.left,
+	nHorizValue: 0,   
+	nVertAlign:app.constants.align.top,
+	nVertValue: 0  
+	}
+);

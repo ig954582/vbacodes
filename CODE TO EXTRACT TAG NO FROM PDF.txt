@@ -1,0 +1,48 @@
+Sub GetTagNoFromPDF()
+        Dim pdffile As String
+        R = 4
+        Do While True
+            DoEvents
+            Cells(R, 1).Select
+            
+            If Cells(R, 1) = 0 Then
+                    Exit Do
+            End If
+            pdffile = Cells(R, 2) & "\" & Cells(R, 1)
+            
+         strg = ReadAcrobatDocument(pdffile)
+         If InStr(1, strg, "17-") > 0 Then
+            x = 1
+            nstrg = Mid(strg, InStr(1, strg, "17-"))
+            DONE = False
+            Do While True
+                    DONE = True
+                    
+                    If Mid(nstrg, 4, 1) = "E" Or Mid(nstrg, 4, 2) = "C-" Or Mid(nstrg, 4, 2) = "D-" Or Mid(nstrg, 4, 2) = "V-" Or Mid(nstrg, 4, 2) = "F-" Or Mid(nstrg, 4, 2) = "G-" Then
+                        nstrg = Mid(nstrg, InStr(6, nstrg, "17-"))
+                        DONE = False
+                    End If
+                    If IsNumeric(Mid(nstrg, 4, 1)) Then
+                        nstrg = Mid(nstrg, InStr(6, nstrg, "17-"))
+                        DONE = False
+                    End If
+                    
+                    If DONE Then
+                        Exit Do
+                    End If
+                     
+            Loop
+            
+            For i = 1 To Len(nstrg)
+                    Debug.Print Asc(Mid(nstrg, i, 1)) & "=" & Mid(nstrg, i, 1)
+                    If Asc(Mid(nstrg, i, 1)) = 13 Or Asc(Mid(nstrg, i, 1)) = 32 Then
+                            nstrg = Mid(nstrg, 1, i - 1)
+                            Exit For
+                    End If
+            Next i
+            Cells(R, 3) = nstrg
+         End If
+         R = R + 1
+        Loop
+         
+End Sub
